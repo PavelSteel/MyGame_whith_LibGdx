@@ -10,6 +10,17 @@ public class GameScreen implements Screen {
     private MyGdxGame runnerGame;
     private SpriteBatch batch;
     private Texture textureBackground;
+    private Texture textureSand;
+
+    private float worldX;
+    private float groundHeight = 190.0f;
+    private float playerAncor = 200.0f;
+
+    private Player player;
+
+    public float getPlayerAncor() {
+        return playerAncor;
+    }
 
     public GameScreen(MyGdxGame runnerGame, SpriteBatch batch) {
         this.runnerGame = runnerGame;
@@ -19,15 +30,27 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         textureBackground = new Texture("bg.png");
+        textureSand = new Texture("ground.png");
+        player = new Player(this);
     }
 
     @Override
     public void render(float delta) {
+        update(delta);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
         batch.draw(textureBackground, 0, 0);
+        for (int i = 0; i < 8; i++) {
+            batch.draw(textureSand, i * 200 - worldX % 200, 0);
+        }
+        player.render(batch);
         batch.end();
+    }
+
+    public void update(float dt){
+        player.update(dt);
+        worldX += 200.0f * dt;
     }
 
     @Override
@@ -53,6 +76,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void dispose() {
-
+        textureSand.dispose();
+        textureBackground.dispose();
     }
 }
