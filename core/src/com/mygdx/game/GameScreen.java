@@ -2,9 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
@@ -14,6 +17,10 @@ public class GameScreen implements Screen {
     private Texture textureBackground;
     private Texture textureSand;
     private Texture textureCactus;
+
+    private BitmapFont font48;
+    private BitmapFont font96;
+
 
     private float groundHeight = 190.0f;
     private float playerAncor = 200.0f;
@@ -48,6 +55,18 @@ public class GameScreen implements Screen {
             enemies[i] = new Cactus(textureCactus, new Vector2(enemies[i - 1].getPosition().x + MathUtils.random(400, 900), groundHeight));
         }
         gameOver = false;
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("Shrikhand-Regular.ttf"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.size = 48;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = 2;
+        parameter.shadowOffsetX = 3;
+        parameter.shadowOffsetY = -3;
+        parameter.shadowColor = Color.BLACK;
+        font48 = generator.generateFont(parameter);
+        parameter.size = 96;
+        font96 = generator.generateFont(parameter);
+        generator.dispose();
     }
 
     @Override
