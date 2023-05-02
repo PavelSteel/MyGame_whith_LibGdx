@@ -1,6 +1,7 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
@@ -12,6 +13,7 @@ public class Player {
     private Texture texture;
     private Vector2 position;
     private Vector2 velocity;
+    private Sound jumpSound;
 
     private Rectangle rectangle;
 
@@ -34,13 +36,14 @@ public class Player {
         return score;
     }
 
-    public Player(GameScreen gameScreen) {
+    public Player(GameScreen gameScreen, Sound jumpSound) {
         this.gameScreen = gameScreen;
         this.texture = new Texture("runner.png");
         this.position = new Vector2(0, 190);
         this.velocity = new Vector2(240.0f, 0.0f);
         this.rectangle = new Rectangle(position.x + WIDTH / 4, position.y, WIDTH / 2, HEIGHT);
         this.score = 0;
+        this.jumpSound = jumpSound;
     }
 
     public void render(SpriteBatch spriteBatch) {
@@ -65,6 +68,7 @@ public class Player {
             time += velocity.x * dt / 300.f;
             if (Gdx.input.justTouched()) {
                 velocity.y = 420.0f;
+                jumpSound.play();
             }
         }
         position.mulAdd(velocity, dt);

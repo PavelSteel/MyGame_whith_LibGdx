@@ -2,6 +2,8 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
@@ -17,10 +19,12 @@ public class GameScreen implements Screen {
     private Texture textureBackground;
     private Texture textureSand;
     private Texture textureCactus;
+    private Sound playerJumpSound;
 
     private BitmapFont font48;
     private BitmapFont font96;
 
+    private Music music;
 
     private float groundHeight = 190.0f;
     private float playerAncor = 200.0f;
@@ -48,8 +52,12 @@ public class GameScreen implements Screen {
     public void show() {
         textureBackground = new Texture("bg.png");
         textureSand = new Texture("ground.png");
-        player = new Player(this);
+        playerJumpSound = Gdx.audio.newSound(Gdx.files.internal("jump2.wav"));
+        player = new Player(this, playerJumpSound);
         textureCactus = new Texture("cactus.png");
+        music = Gdx.audio.newMusic(Gdx.files.internal("run2.mp3"));
+        music.setLooping(true);
+        music.play();
         enemies = new Cactus[10];
         enemies[0] = new Cactus(textureCactus, new Vector2(1400, groundHeight));
         for (int i = 1; i < 10; i++) {
@@ -90,6 +98,7 @@ public class GameScreen implements Screen {
             font48.setColor(1,1,1,0.5f + 0.5f*(float)Math.sin(time * 5.0f));
             font48.draw(batch, "Tap to Restart", 450, 282);
             font48.setColor(1,1,1,1);
+            music.pause();
         }
         batch.end();
     }
@@ -101,6 +110,7 @@ public class GameScreen implements Screen {
             enemies[i].setPosition(enemies[i - 1].getPosition().x + MathUtils.random(400, 900), groundHeight);
         }
         player.restart();
+        music.play();
     }
 
     public float getRightestEnemy() {
@@ -161,5 +171,7 @@ public class GameScreen implements Screen {
         textureSand.dispose();
         textureBackground.dispose();
         textureCactus.dispose();
+        music.dispose();
+        playerJumpSound.dispose();
     }
 }
