@@ -18,6 +18,8 @@ public class GameScreen implements Screen {
     private float groundHeight = 190.0f;
     private float playerAncor = 200.0f;
 
+    private boolean gameOver;
+
     private Player player;
     private Cactus[] enemies;
 
@@ -43,8 +45,9 @@ public class GameScreen implements Screen {
         enemies = new Cactus[10];
         enemies[0] = new Cactus(textureCactus, new Vector2(1400, groundHeight));
         for (int i = 1; i < 10; i++) {
-            enemies[i] = new Cactus(textureCactus, new Vector2(enemies[i-1].getPosition().x + MathUtils.random(400,900), groundHeight));
+            enemies[i] = new Cactus(textureCactus, new Vector2(enemies[i - 1].getPosition().x + MathUtils.random(400, 900), groundHeight));
         }
+        gameOver = false;
     }
 
     @Override
@@ -64,8 +67,32 @@ public class GameScreen implements Screen {
         batch.end();
     }
 
-    public void update(float dt){
-        player.update(dt);
+    public float getRightestEnemy() {
+        float maxValue = 0.0f;
+        for (int i = 0; i < enemies.length; i++) {
+            if (enemies[i].getPosition().x > maxValue) {
+                maxValue = enemies[i].getPosition().x;
+            }
+        }
+        return maxValue;
+    }
+
+    public void update(float dt) {
+        if (!gameOver) {
+            player.update(dt);
+            for (int i = 0; i < enemies.length; i++) {
+                if (enemies[i].getPosition().x < player.getPosition().x - playerAncor - 80) {
+                    enemies[i].setPosition(getRightestEnemy() + MathUtils.random(400, 900), groundHeight);
+                }
+            }
+
+            for (int i = 0; i < enemies.length; i++) {
+                if (enemies[i].getRectangle().overlaps(player.getRectangle())) {
+                    gameOver = true;
+                    break;
+                }
+            }
+        }
     }
 
     @Override
