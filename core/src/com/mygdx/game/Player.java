@@ -30,6 +30,10 @@ public class Player {
         return rectangle;
     }
 
+    public float getScore() {
+        return score;
+    }
+
     public Player(GameScreen gameScreen) {
         this.gameScreen = gameScreen;
         this.texture = new Texture("runner.png");
@@ -45,6 +49,13 @@ public class Player {
         spriteBatch.draw(texture, gameScreen.getPlayerAncor(), position.y, frame * 100, 0, WIDTH, HEIGHT);
     }
 
+    public void restart(){
+        position.set(0, gameScreen.getGroundHeight());
+        score = 0;
+        velocity.set(240.0f, 0.0f);
+        rectangle.setPosition(position);
+    }
+
     public void update(float dt) {
         if (position.y > gameScreen.getGroundHeight()) {
             velocity.y -= 720.0f * dt;
@@ -58,7 +69,7 @@ public class Player {
         }
         position.mulAdd(velocity, dt);
         velocity.x += 5.0f * dt;
-        score = velocity.x * dt / 5.0f;
+        score += velocity.x * dt / 5.0f;
         rectangle.setPosition(position.x + WIDTH / 4, position.y);
     }
 }

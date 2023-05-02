@@ -24,6 +24,7 @@ public class GameScreen implements Screen {
 
     private float groundHeight = 190.0f;
     private float playerAncor = 200.0f;
+    private float time;
 
     private boolean gameOver;
 
@@ -83,7 +84,23 @@ public class GameScreen implements Screen {
         for (int i = 0; i < enemies.length; i++) {
             enemies[i].render(batch, player.getPosition().x - playerAncor);
         }
+        font48.draw(batch, "SCORE: " + (int) player.getScore(), 22, 702);
+        if (gameOver){
+            font96.draw(batch, "GAME OVER", 360, 382);
+            font48.setColor(1,1,1,0.5f + 0.5f*(float)Math.sin(time * 5.0f));
+            font48.draw(batch, "Tap to Restart", 450, 282);
+            font48.setColor(1,1,1,1);
+        }
         batch.end();
+    }
+
+    public void restart(){
+        gameOver = false;
+        enemies[0].setPosition(1400, groundHeight);
+        for (int i = 1; i < 10; i++) {
+            enemies[i].setPosition(enemies[i - 1].getPosition().x + MathUtils.random(400, 900), groundHeight);
+        }
+        player.restart();
     }
 
     public float getRightestEnemy() {
@@ -97,6 +114,7 @@ public class GameScreen implements Screen {
     }
 
     public void update(float dt) {
+        time += dt;
         if (!gameOver) {
             player.update(dt);
             for (int i = 0; i < enemies.length; i++) {
@@ -111,6 +129,9 @@ public class GameScreen implements Screen {
                     break;
                 }
             }
+        } else {
+            if (Gdx.input.justTouched())
+                restart();
         }
     }
 
