@@ -5,17 +5,21 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 
 public class GameScreen implements Screen {
     private MyGdxGame runnerGame;
     private SpriteBatch batch;
     private Texture textureBackground;
     private Texture textureSand;
+    private Texture textureCactus;
 
     private float groundHeight = 190.0f;
     private float playerAncor = 200.0f;
 
     private Player player;
+    private Cactus[] enemies;
 
     public float getGroundHeight() {
         return groundHeight;
@@ -35,6 +39,12 @@ public class GameScreen implements Screen {
         textureBackground = new Texture("bg.png");
         textureSand = new Texture("ground.png");
         player = new Player(this);
+        textureCactus = new Texture("cactus.png");
+        enemies = new Cactus[10];
+        enemies[0] = new Cactus(textureCactus, new Vector2(1400, groundHeight));
+        for (int i = 1; i < 10; i++) {
+            enemies[i] = new Cactus(textureCactus, new Vector2(enemies[i-1].getPosition().x + MathUtils.random(400,900), groundHeight));
+        }
     }
 
     @Override
@@ -48,6 +58,9 @@ public class GameScreen implements Screen {
             batch.draw(textureSand, i * 200 - player.getPosition().x % 200, 0);
         }
         player.render(batch);
+        for (int i = 0; i < enemies.length; i++) {
+            enemies[i].render(batch, player.getPosition().x - playerAncor);
+        }
         batch.end();
     }
 
@@ -80,5 +93,6 @@ public class GameScreen implements Screen {
     public void dispose() {
         textureSand.dispose();
         textureBackground.dispose();
+        textureCactus.dispose();
     }
 }

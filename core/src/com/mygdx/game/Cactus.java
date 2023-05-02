@@ -17,6 +17,10 @@ public class Cactus {
         return rectangle;
     }
 
+    public Vector2 getPosition() {
+        return position;
+    }
+
     public Cactus(Texture texture, Vector2 position) {
         this.texture = texture;
         this.position = position;
