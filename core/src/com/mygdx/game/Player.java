@@ -49,5 +49,7 @@ public class Player {
             }
         }
         position.mulAdd(velocity, dt);
+        velocity.x += 5.0f * dt;
+        score = velocity.x * dt / 5.0f;
     }
 }
