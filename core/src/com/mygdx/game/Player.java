@@ -1,5 +1,6 @@
 package com.mygdx.game;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -37,7 +38,16 @@ public class Player {
     }
 
     public void update(float dt) {
-        time += velocity.x * dt / 300.f;
+        if (position.y > gameScreen.getGroundHeight()) {
+            velocity.y -= 720.0f * dt;
+        } else {
+            position.y = gameScreen.getGroundHeight();
+            velocity.y = 0.0f;
+            time += velocity.x * dt / 300.f;
+            if (Gdx.input.justTouched()) {
+                velocity.y = 420.0f;
+            }
+        }
         position.mulAdd(velocity, dt);
     }
 }
