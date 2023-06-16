@@ -50,11 +50,11 @@ public class GameScreen implements Screen {
 
     @Override
     public void show() {
-        textureBackground = new Texture("bg.png");
-        textureSand = new Texture("ground.png");
+        textureBackground = new Texture("bg2.png");
+        textureSand = new Texture("ground3.png");
         playerJumpSound = Gdx.audio.newSound(Gdx.files.internal("jump2.wav"));
         player = new Player(this, playerJumpSound);
-        textureCactus = new Texture("cactus.png");
+        textureCactus = new Texture("cactus2.png");
         music = Gdx.audio.newMusic(Gdx.files.internal("run2.mp3"));
         music.setLooping(true);
         music.play();

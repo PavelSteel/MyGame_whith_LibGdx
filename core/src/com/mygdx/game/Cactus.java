@@ -24,7 +24,7 @@ public class Cactus {
     public Cactus(Texture texture, Vector2 position) {
         this.texture = texture;
         this.position = position;
-        this.rectangle = new Rectangle(position.x, position.y, WIGHT, HEIGHT);
+        this.rectangle = new Rectangle(position.x, position.y, WIGHT/2, HEIGHT/2);
     }
 
     public void setPosition(float x, float y) {

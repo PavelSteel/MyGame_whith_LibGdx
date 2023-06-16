@@ -38,10 +38,10 @@ public class Player {
 
     public Player(GameScreen gameScreen, Sound jumpSound) {
         this.gameScreen = gameScreen;
-        this.texture = new Texture("runner.png");
+        this.texture = new Texture("runner2.png");
         this.position = new Vector2(0, 190);
         this.velocity = new Vector2(240.0f, 0.0f);
-        this.rectangle = new Rectangle(position.x + WIDTH / 4, position.y, WIDTH / 2, HEIGHT);
+        this.rectangle = new Rectangle(position.x + WIDTH / 4, position.y, WIDTH / 4, HEIGHT);
         this.score = 0;
         this.jumpSound = jumpSound;
     }
